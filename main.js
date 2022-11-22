@@ -153,11 +153,10 @@ function runDecoupledClock() {
 
 function runClock() {
   if (realTimeMode) {
-    console.log('RT clock running');
     realTimeClock = setInterval(() => {
       displayCurrentTime();
     }, 1000);
-    console.log(realTimeClock);
+    console.log(`spawned RT clock interval timer with ID: ${realTimeClock}`);
   } else {
     runDecoupledClock();
   }
