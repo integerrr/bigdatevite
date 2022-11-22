@@ -191,6 +191,8 @@ window.onload = () => {
   });
 
   document.getElementById('dateTimePickerReset').addEventListener('click', () => {
+    // button should only work when clock isn't already running real time,
+    // otherwise will spawn too many `setInterval`s via runClock()
     if (!realTimeMode) {
       picker.dates.clear();
       dateTimePickerInput.value = '';
