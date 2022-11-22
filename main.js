@@ -185,16 +185,21 @@ window.onload = () => {
   const dateTimePickerInput = document.getElementById('datetimepicker1Input');
   dateTimePickerInput.addEventListener('change', () => {
     const pickedTime = picker.dates.lastPicked;
+    console.log(pickedTime);
     realTimeMode = pickedTime === undefined;
     runClock();
   });
 
   document.getElementById('dateTimePickerReset').addEventListener('click', () => {
+    // button becomes useless if inside conditional and user needs to clear the textbox
+    dateTimePickerInput.value = '';
+    
     // button should only work when clock isn't already running real time,
     // otherwise will spawn too many `setInterval`s via runClock()
     if (!realTimeMode) {
+      // clearing picker must be inside conditional otherwise you get more
+      // setIntervals for whatever reason
       picker.dates.clear();
-      dateTimePickerInput.value = '';
       realTimeMode = true;
       displayCurrentTime();
       runClock();
