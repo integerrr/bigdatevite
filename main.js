@@ -37,8 +37,8 @@ document.querySelector('#app').innerHTML = `
     </div>
 
   <div id="output">
-    <div class="input-group mb-3">
-      <input id="outputTextfield" type="text" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
+    <div class="input-group flex-wrap mb-3">
+      <input id="outputTextfield" type="text" class="form-control h-auto text-wrap fw-bold" aria-label="readonly input example" readonly>
       <button class="btn btn-outline-light" type="button" id="outputCopyButton">
         <span class="fa-regular fa-copy"></span>
       </button>
