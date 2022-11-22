@@ -102,7 +102,6 @@ function convertArabicNumbertoCantoNumber(num, type) {
  * @param {Date} now
  */
 function displayIsoDate(now) {
-  // document.getElementById('isoTime').innerHTML = now.toLocaleString();
   document.getElementById('datetimepicker1Input').placeholder = now.toLocaleString();
 }
 
@@ -125,7 +124,6 @@ function displayCantoDate(now) {
     ? `${convertArabicNumbertoCantoNumber(now.getSeconds(), TIME_TYPE.second)}秒`
     : '';
 
-  // document.getElementById('convertedDate').innerHTML = convertedTimeString;
   document.getElementById('outputTextfield').value = convertedTimeString;
 }
 
@@ -149,7 +147,6 @@ function runDecoupledClock() {
   console.log('clock decoupled');
 
   const pickedTime = picker.dates.lastPicked;
-  // pickedTime.setSeconds(0);
   console.log(`manually picked time is ${pickedTime}`);
   displayPickedTime(pickedTime);
 }
@@ -160,6 +157,7 @@ function runClock() {
     realTimeClock = setInterval(() => {
       displayCurrentTime();
     }, 1000);
+    console.log(realTimeClock);
   } else {
     runDecoupledClock();
   }
@@ -193,11 +191,13 @@ window.onload = () => {
   });
 
   document.getElementById('dateTimePickerReset').addEventListener('click', () => {
-    picker.dates.clear();
-    dateTimePickerInput.value = '';
-    realTimeMode = true;
-    displayCurrentTime();
-    runClock();
+    if (!realTimeMode) {
+      picker.dates.clear();
+      dateTimePickerInput.value = '';
+      realTimeMode = true;
+      displayCurrentTime();
+      runClock();
+    }
   });
 
   document.getElementById('outputCopyButton').addEventListener('click', () => {
