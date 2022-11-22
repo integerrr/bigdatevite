@@ -140,18 +140,41 @@ function displayCurrentTime() {
 
 function runDecoupledClock() {
   clearInterval(realTimeClock);
+  console.log('clock decoupled');
+
   const pickedTime = picker.dates.lastPicked;
   pickedTime.setSeconds(0);
+  console.log(`manually picked time is ${pickedTime}`);
   displayPickedTime(pickedTime);
 }
 
 function runClock() {
   if (realTimeMode) {
+    console.log('RT clock running');
     realTimeClock = setInterval(() => {
       displayCurrentTime();
     }, 1000);
   } else {
     runDecoupledClock();
+  }
+}
+
+function returnCopyBtnBackToOriginal() {
+  setTimeout(() => {
+    document.getElementById('output').querySelector('span').className = 'fa-regular fa-copy';
+  }, 1500);
+}
+
+async function copyContent(outputText) {
+  try {
+    await navigator.clipboard.writeText(outputText);
+    console.log(`copied "${outputText}"`);
+    document.getElementById('output').querySelector('span').className = 'fa-solid fa-check';
+    returnCopyBtnBackToOriginal();
+  } catch (error) {
+    console.error('cannot copy', error);
+    document.getElementById('output').querySelector('span').className = 'fa-solid fa-xmark';
+    returnCopyBtnBackToOriginal();
   }
 }
 
@@ -173,14 +196,7 @@ window.onload = () => {
 
   document.getElementById('outputCopyButton').addEventListener('click', () => {
     const outputText = document.getElementById('outputTextfield').value;
-    const copyContent = async () => {
-      try {
-        await navigator.clipboard.writeText(outputText);
-        console.log(`copied "${outputText}"`);
-      } catch (error) {
-        console.error('cannot copy', error);
-      }
-    };
+    copyContent(outputText);
   });
 
   displayCurrentTime();
