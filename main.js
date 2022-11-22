@@ -2,46 +2,47 @@ import './style.css'
 import { TempusDominus } from '@eonasdan/tempus-dominus';
 
 document.querySelector('#app').innerHTML = `
-  <div>
+<div>
   <div id="input">
 
-  <div
-      class = "input-group log-event"
-      id = "datetimepicker1"
-      data-td-target-input = "nearest"
-      data-td-target-toogle = "nearest"
-      >
+    <div class = "input-group log-event"
+         id = "datetimepicker1"
+         data-td-target-input = "nearest"
+         data-td-target-toogle = "nearest"
+         >
       <input
-          id="datetimepicker1Input"
-          type="text"
-          class="form-control"
-          placeholder=""
-          data-td-target="#datetimepicker1"
-          />
+        id="datetimepicker1Input"
+        type="text"
+        class="form-control"
+        placeholder=""
+        data-td-target="#datetimepicker1"
+        />
       <span
-          class="input-group-text"
-          data-td-input="#datetimepicker1"
-          data-td-toogle="datatimepicker"
-          >
-          <span class="fa-solid fa-calendar"></span>
+        class="input-group-text"
+        data-td-input="#datetimepicker1"
+        data-td-toogle="datatimepicker"
+        >
+        <span class="fa-solid fa-calendar"></span>
       </span>
-  </div>
+    </div>
 
-
-  <button type="button" class="btn btn-primary" id="dateTimePickerReset"
-      style="margin: 20px;">Reset</button>
-  <!-- <h3 id="isoTime">a</h3> -->
-  <!-- <h1 id="convertedDate">b</h1> -->
+    <div class="container"> 
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="useSecondSwitch" checked>
+        <label class="form-check-label" for="flexSwitchCheckChecked">Seconds</label>
+      </div>
+    
+      <button type="button" class="btn btn-primary" id="dateTimePickerReset"
+        style="margin: 20px;">Reset</button>
+    </div>
 
   <div id="output">
-      
-      <div class="input-group mb-3">
-          <input id="outputTextfield" type="text" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
-          <button class="btn btn-outline-light" type="button" id="outputCopyButton">
-              <span class="fa-regular fa-copy"></span>
-          </button>
-      </div>
-      
+    <div class="input-group mb-3">
+      <input id="outputTextfield" type="text" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
+      <button class="btn btn-outline-light" type="button" id="outputCopyButton">
+        <span class="fa-regular fa-copy"></span>
+      </button>
+    </div>
   </div>
   
 </div>
@@ -58,10 +59,13 @@ const TIME_TYPE = {
 
 let realTimeMode = true;
 let realTimeClock = null;
+let useSecond = true;
 
 const picker = new TempusDominus(document.getElementById('datetimepicker1'), {
   display: {
-    sideBySide: true,
+    components: {
+      seconds: true,
+    },
   },
 });
 
@@ -75,9 +79,9 @@ function convertArabicNumbertoCantoNumber(num, type) {
   // year
   if (type === 0) {
     return CANTO_NUMS[Math.floor(num / 1000)]
-    + CANTO_NUMS[Math.floor((num % 1000) / 100)]
-    + CANTO_NUMS[Math.floor((num % 100) / 10)]
-    + CANTO_NUMS[Math.floor(num % 10)];
+      + CANTO_NUMS[Math.floor((num % 1000) / 100)]
+      + CANTO_NUMS[Math.floor((num % 100) / 10)]
+      + CANTO_NUMS[Math.floor(num % 10)];
   }
 
   // month, day, hour || minute, second
@@ -117,7 +121,9 @@ function displayCantoDate(now) {
   convertedTimeString += `${convertArabicNumbertoCantoNumber(now.getDate(), TIME_TYPE.day)}日`;
   convertedTimeString += `${ampm + convertArabicNumbertoCantoNumber(realHour, TIME_TYPE.hour)}時`;
   convertedTimeString += `${convertArabicNumbertoCantoNumber(now.getMinutes(), TIME_TYPE.minute)}分`;
-  convertedTimeString += `${convertArabicNumbertoCantoNumber(now.getSeconds(), TIME_TYPE.second)}秒`;
+  convertedTimeString += useSecond
+    ? `${convertArabicNumbertoCantoNumber(now.getSeconds(), TIME_TYPE.second)}秒`
+    : '';
 
   // document.getElementById('convertedDate').innerHTML = convertedTimeString;
   document.getElementById('outputTextfield').value = convertedTimeString;
@@ -143,7 +149,7 @@ function runDecoupledClock() {
   console.log('clock decoupled');
 
   const pickedTime = picker.dates.lastPicked;
-  pickedTime.setSeconds(0);
+  // pickedTime.setSeconds(0);
   console.log(`manually picked time is ${pickedTime}`);
   displayPickedTime(pickedTime);
 }
@@ -197,6 +203,15 @@ window.onload = () => {
   document.getElementById('outputCopyButton').addEventListener('click', () => {
     const outputText = document.getElementById('outputTextfield').value;
     copyContent(outputText);
+  });
+
+  document.getElementById('useSecondSwitch').addEventListener('change', () => {
+    useSecond = !useSecond;
+    if (realTimeMode) {
+      displayCurrentTime();
+    } else {
+      displayPickedTime(picker.dates.lastPicked);
+    }
   });
 
   displayCurrentTime();
