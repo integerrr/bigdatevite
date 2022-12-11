@@ -76,10 +76,6 @@ const picker = new tempusDominus.TempusDominus(document.getElementById('datetime
   }
 });
 
-/**
- * @param {number} num
- * @param {number} type
- */
 function convertArabicNumbertoCantoNumber(num, type) {
   const CANTO_NUMS = ['零', '壹', '貳', '參', '肆', '伍', '陸', '柒', '捌', '玖'];
 
@@ -126,9 +122,6 @@ function displayIsoDate(time) {
   document.getElementById('datetimepicker1Input').placeholder = timeToString(time);
 }
 
-/**
- * @param {Date} time
- */
 function displayCantoDate(time) {
   let convertedTimeString = '';
   const ampm = time.getHours() >= 12 ? '下午' : '上午';
@@ -148,9 +141,6 @@ function displayCantoDate(time) {
   document.getElementById('outputTextfield').value = convertedTimeString;
 }
 
-/**
- * @param {import("@eonasdan/tempus-dominus").DateTime} pickedTime
- */
 function displayPickedTime(pickedTime) {
   displayIsoDate(pickedTime);
   displayCantoDate(pickedTime);
