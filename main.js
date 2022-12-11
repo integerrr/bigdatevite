@@ -1,5 +1,7 @@
 import './style.css';
-import { TempusDominus } from '@eonasdan/tempus-dominus';
+import customDateFormat from '@eonasdan/tempus-dominus/dist/plugins/customDateFormat';
+// eslint-disable-next-line no-undef
+tempusDominus.extend(customDateFormat);
 
 document.querySelector('#app').innerHTML = `
 <div>
@@ -61,12 +63,17 @@ let realTimeMode = true;
 let realTimeClock = null;
 let useSecond = true;
 
-const picker = new TempusDominus(document.getElementById('datetimepicker1'), {
+// eslint-disable-next-line no-undef
+const picker = new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
   display: {
     components: {
       seconds: true,
     },
   },
+  localization: {
+    locale: 'en-HK',
+    format: 'yyyy-MM-dd HH:mm:ss'
+  }
 });
 
 /**
