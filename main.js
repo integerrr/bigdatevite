@@ -48,7 +48,7 @@ document.querySelector('#app').innerHTML = `
 </div>
 `;
 
-const TIME_TYPE = {
+const time_type = {
   year: 0,
   month: 1,
   day: 1,
@@ -115,13 +115,13 @@ function displayCantoDate(time) {
     ? time.getHours() - 12
     : time.getHours();
 
-  convertedTimeString += `${convertArabicNumbertoCantoNumber(time.getFullYear(), TIME_TYPE.year)}年`;
-  convertedTimeString += `${convertArabicNumbertoCantoNumber(time.getMonth() + 1, TIME_TYPE.month)}月`;
-  convertedTimeString += `${convertArabicNumbertoCantoNumber(time.getDate(), TIME_TYPE.day)}日`;
-  convertedTimeString += `${ampm + convertArabicNumbertoCantoNumber(realHour, TIME_TYPE.hour)}時`;
-  convertedTimeString += `${convertArabicNumbertoCantoNumber(time.getMinutes(), TIME_TYPE.minute)}分`;
+  convertedTimeString += `${convertArabicNumbertoCantoNumber(time.getFullYear(), time_type.year)}年`;
+  convertedTimeString += `${convertArabicNumbertoCantoNumber(time.getMonth() + 1, time_type.month)}月`;
+  convertedTimeString += `${convertArabicNumbertoCantoNumber(time.getDate(), time_type.day)}日`;
+  convertedTimeString += `${ampm + convertArabicNumbertoCantoNumber(realHour, time_type.hour)}時`;
+  convertedTimeString += `${convertArabicNumbertoCantoNumber(time.getMinutes(), time_type.minute)}分`;
   convertedTimeString += useSecond
-    ? `${convertArabicNumbertoCantoNumber(time.getSeconds(), TIME_TYPE.second)}秒`
+    ? `${convertArabicNumbertoCantoNumber(time.getSeconds(), time_type.second)}秒`
     : '';
 
   document.getElementById('outputTextfield').value = convertedTimeString;
