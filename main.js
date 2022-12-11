@@ -105,11 +105,25 @@ function convertArabicNumbertoCantoNumber(num, type) {
   return '???';
 }
 
-/**
- * @param {Date} time
- */
+function padZeroToNumber(num) {
+  return num < 10 ? '0'+num : num;
+}
+
+function timeToString(time) {
+  let string = '';
+
+  string += `${time.getFullYear()}-`;
+  string += `${padZeroToNumber(time.getMonth()+1)}-`;
+  string += `${padZeroToNumber(time.getDate())} `;
+  string += `${padZeroToNumber(time.getHours())}:`;
+  string += `${padZeroToNumber(time.getMinutes())}:`;
+  string += `${padZeroToNumber(time.getSeconds())}`;
+  
+  return string;
+}
+
 function displayIsoDate(time) {
-  document.getElementById('datetimepicker1Input').placeholder = time.toLocaleString();
+  document.getElementById('datetimepicker1Input').placeholder = timeToString(time);
 }
 
 /**
